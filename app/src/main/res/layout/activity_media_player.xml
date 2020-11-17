@@ -17,14 +17,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3"
         app:layout_constraintVertical_bias="0.046"
-        tools:src="@tools:sample/avatars[6]" />
+        tools:src="@drawable/music" />
 
     <TextView
         android:id="@+id/now_playing_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Now playing.."
+        android:text="loading...."
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         android:textStyle="italic"
@@ -39,7 +39,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="artist"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         android:textStyle="italic"
@@ -81,7 +80,13 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/ic_baseline_pause_circle_filled_24"
-            android:text="Pause" />
+            android:visibility="visible" />
+        <ProgressBar
+            android:layout_width="100dp"
+            android:id="@+id/pause_loading"
+            android:progressTint="#82e9de"
+          android:progressBackgroundTint="#82e9de"
+            android:layout_height="100dp"/>
 
         <ImageView
             android:id="@+id/forward"
@@ -120,7 +125,8 @@
         <SeekBar
             android:id="@+id/seekBar"
             android:layout_width="wrap_content"
-
+            android:progressTint="#ffffff"
+            android:thumbTint="#ffffff"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_weight="1"

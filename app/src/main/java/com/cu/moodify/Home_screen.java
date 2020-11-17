@@ -6,12 +6,16 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -92,14 +96,7 @@ public class Home_screen extends AppCompatActivity {
         });
 
         textViewUserEmail.setText("Welcome " + user.getDisplayName());
-        buttonLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                firebaseAuth.signOut();
-                finish();
-                startActivity(new Intent(Home_screen.this, LoginActivity.class));
-            }
-        });
+
 
         play_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,5 +106,27 @@ public class Home_screen extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.home_menu, menu);
 
+        // return true so that the menu pop up is opened
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+
+            case R.id.action_logout:
+                firebaseAuth.signOut();
+                finish();
+                startActivity(new Intent(Home_screen.this, LoginActivity.class));
+                break;
+
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
