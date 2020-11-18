@@ -9,8 +9,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".Music_Player"></activity>
+        android:theme="@style/AppTheme"
+        tools:ignore="AllowBackup">
         <activity android:name=".decider" />
         <activity
             android:name=".Splash_screen"
@@ -31,7 +31,7 @@
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".Home_screen" />
         <activity
-            android:name=".URLMediaPlayerActivity"
+            android:name=".Music_player"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 

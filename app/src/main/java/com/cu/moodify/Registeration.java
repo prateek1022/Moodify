@@ -27,8 +27,6 @@ public class Registeration extends AppCompatActivity  {
 
     private EditText editTextEmail;
     private EditText editTextPassword,first_name,last_name,conf_pass;
-    private Button buttonSignup;
-    private TextView textViewSignin;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
 
@@ -38,13 +36,13 @@ public class Registeration extends AppCompatActivity  {
         setContentView(R.layout.activity_register);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
-        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
-        textViewSignin = (TextView) findViewById(R.id.textViewSignin);
+        editTextEmail =  findViewById(R.id.editTextEmail);
+        editTextPassword =  findViewById(R.id.editTextPassword);
+        TextView textViewSignin = findViewById(R.id.textViewSignin);
         first_name=findViewById(R.id.reg_f_name);
         last_name=findViewById(R.id.reg_l_name);
         conf_pass=findViewById(R.id.reg_conf_pass);
-        buttonSignup = (Button) findViewById(R.id.buttonSignup);
+        Button buttonSignup = findViewById(R.id.buttonSignup);
         progressDialog = new ProgressDialog(this);
 
         buttonSignup.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +97,7 @@ public class Registeration extends AppCompatActivity  {
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(name).build();
 
+                            //noinspection ConstantConditions
                             user.updateProfile(profileUpdates)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override

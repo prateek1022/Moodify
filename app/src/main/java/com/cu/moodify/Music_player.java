@@ -1,26 +1,19 @@
 package com.cu.moodify;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
@@ -34,8 +27,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.Objects;
 
-public class URLMediaPlayerActivity extends Activity {
+public class Music_player extends Activity {
 
     private MediaPlayer mediaPlayer;
     private SeekBar seekBar;
@@ -43,13 +37,13 @@ public class URLMediaPlayerActivity extends Activity {
     ProgressBar loading;
     TextView now_playing, artist;
     Boolean play_pause = true;
-    private Handler mHandler = new Handler();
+    private Handler mHandler = new Handler(Looper.getMainLooper());
     ImageView mImageView;
 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_media_player);
+        setContentView(R.layout.activity_music_player);
 
         now_playing = findViewById(R.id.now_playing_text);
         pause = findViewById(R.id.pause);
@@ -63,12 +57,12 @@ public class URLMediaPlayerActivity extends Activity {
         mImageView = findViewById(R.id.coverImage);
         Picasso.get().load(R.drawable.music).into(mImageView);
 
-        new Handler().postDelayed(new Runnable() {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 main_run();
             }
-        },500);
+        }, 500);
 
     }
 
@@ -126,10 +120,7 @@ public class URLMediaPlayerActivity extends Activity {
             mediaPlayer.setDataSource(audioFile);
             mediaPlayer.prepare();
             MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-            if (Build.VERSION.SDK_INT >= 14)
-                mmr.setDataSource(audioFile, new HashMap<String, String>());
-            else
-                mmr.setDataSource(audioFile);
+            mmr.setDataSource(audioFile, new HashMap<String, String>());
 
             String artist_S = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
             String title = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
@@ -138,6 +129,7 @@ public class URLMediaPlayerActivity extends Activity {
 
             byte[] img_bitmap = mmr.getEmbeddedPicture();
 
+            //noinspection ConstantConditions
             final Bitmap bitmap = BitmapFactory.decodeByteArray(img_bitmap, 0, img_bitmap.length);
             now_playing.setText(title);
 
@@ -148,7 +140,7 @@ public class URLMediaPlayerActivity extends Activity {
                     mRunnable.run();
                     seekBar.setClickable(true);
                     seekBar.setEnabled(true);
-                    loadBitmapByPicasso(URLMediaPlayerActivity.this, bitmap, mImageView);
+                    loadBitmapByPicasso(Music_player.this, bitmap, mImageView);
                     pause.setVisibility(View.VISIBLE);
                     loading.setVisibility(View.GONE);
                 }
@@ -184,22 +176,14 @@ public class URLMediaPlayerActivity extends Activity {
 
         int seekForwardTime = 5000;
         int currentPosition = mediaPlayer.getCurrentPosition();
-        if (currentPosition + seekForwardTime <= mediaPlayer.getDuration()) {
-            mediaPlayer.seekTo(currentPosition + seekForwardTime);
-        } else {
-            mediaPlayer.seekTo(mediaPlayer.getDuration());
-        }
+        mediaPlayer.seekTo(Math.min(currentPosition + seekForwardTime, mediaPlayer.getDuration()));
     }
 
     public void seekBackward(View view) {
 
         int seekBackwardTime = 5000;
         int currentPosition = mediaPlayer.getCurrentPosition();
-        if (currentPosition - seekBackwardTime >= 0) {
-            mediaPlayer.seekTo(currentPosition - seekBackwardTime);
-        } else {
-            mediaPlayer.seekTo(0);
-        }
+        mediaPlayer.seekTo(Math.max(currentPosition - seekBackwardTime, 0));
     }
 
     public void onBackPressed() {
@@ -214,17 +198,14 @@ public class URLMediaPlayerActivity extends Activity {
     }
 
     private String getTimeString(long millis) {
-        StringBuffer buf = new StringBuffer();
 
-        long hours = millis / (1000 * 60 * 60);
         long minutes = (millis % (1000 * 60 * 60)) / (1000 * 60);
         long seconds = ((millis % (1000 * 60 * 60)) % (1000 * 60)) / 1000;
-        buf
-                .append(String.format("%02d", minutes))
-                .append(":")
-                .append(String.format("%02d", seconds));
 
-        return buf.toString();
+         @SuppressLint("DefaultLocale") String buf = String.format("%02d", minutes) +
+                ":" +
+                String.format("%02d", seconds);
+        return buf;
     }
 
     private void loadBitmapByPicasso(Context pContext, Bitmap pBitmap, ImageView pImageView) {
@@ -232,10 +213,11 @@ public class URLMediaPlayerActivity extends Activity {
             Uri uri = Uri.fromFile(File.createTempFile("temp_file_name", ".jpg", pContext.getCacheDir()));
             OutputStream outputStream = pContext.getContentResolver().openOutputStream(uri);
             pBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            //noinspection ConstantConditions
             outputStream.close();
             Picasso.get().load(uri).into(pImageView);
         } catch (Exception e) {
-            Log.e("LoadBitmapByPicasso", e.getMessage());
+            Log.e("LoadBitmapByPicasso", Objects.requireNonNull(e.getMessage()));
         }
     }
 }

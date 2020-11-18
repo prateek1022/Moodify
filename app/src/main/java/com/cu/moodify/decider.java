@@ -24,12 +24,11 @@ public class decider extends AppCompatActivity {
 
             //and open profile activity
             startActivity(new Intent(decider.this, Home_screen.class));
-            finish();
         }
         else{
             //user not logged in
             startActivity(new Intent(decider.this, LoginActivity.class));
-            finish();
         }
+        finish();
     }
 }

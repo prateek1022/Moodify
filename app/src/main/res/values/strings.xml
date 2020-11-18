@@ -3,6 +3,20 @@
     <string name="mood_question"><u>What is your Mood?</u></string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_media_player">URL Media Player</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading…</string>
     <string name="file_not_found">File not found</string>
+    <string name="logout_string">Logout</string>
+    <string name="happy">Happy</string>
+    <string name="sad">&#160;&#160;Sad&#160;&#160;</string>
+    <string name="angry">Angry</string>
+    <string name="play_text">▶ Play</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="login_text">Login</string>
+    <string name="not_have_account">Not have an account? Signup Here</string>
+
+
+
+
+
 </resources>

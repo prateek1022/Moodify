@@ -21,10 +21,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity  {
 
-    private Button buttonSignIn;
     private EditText editTextEmail;
     private EditText editTextPassword;
-    private TextView textViewSignup;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
 
@@ -40,8 +38,8 @@ public class LoginActivity extends AppCompatActivity  {
 
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
-        buttonSignIn = (Button) findViewById(R.id.buttonSignin);
-        textViewSignup  = (TextView) findViewById(R.id.textViewSignUp);
+        Button buttonSignIn = (Button) findViewById(R.id.buttonSignin);
+        TextView textViewSignup = (TextView) findViewById(R.id.textViewSignUp);
 
         progressDialog = new ProgressDialog(this);
 
